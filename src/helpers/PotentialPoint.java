@@ -18,6 +18,7 @@ public class PotentialPoint {
 
         isObstacle = false;
         value = 0.0;
+        this.wir = 0.0;
     }
 
     public PotentialPoint(Double x, Double y, Boolean isObstacle, Double value, Double wir) {
@@ -34,6 +35,14 @@ public class PotentialPoint {
         isObstacle = false;
         value = 0.0;
         this.wir = 0.0;
+    }
+
+    public PotentialPoint(PotentialPoint other) {
+        this.x = other.x;
+        this.y = other.y;
+        this.isObstacle = other.isObstacle;
+        this.value = other.value;
+        this.wir = other.wir;
     }
 
     public Double getX() {

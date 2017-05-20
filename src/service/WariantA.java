@@ -2,7 +2,10 @@ package service;
 
 import helpers.IterationIntegralContainer;
 import helpers.Obstacle;
+import helpers.PotentialAndWirContainer;
 import helpers.PotentialPoint;
+
+import java.util.Arrays;
 
 public class WariantA {
 
@@ -20,6 +23,12 @@ public class WariantA {
 
     private TYPE type;
 
+    private Double Q = -1.0;
+
+    private final Double ni = 1.0;
+
+    private final Double density = 1.0;
+
     // Dla zadania 1
     public WariantA(MatrixSpace matrixSpace) {
         this.matrixSpace = matrixSpace;
@@ -29,63 +38,81 @@ public class WariantA {
         evaluateInitialEdges();
     }
 
-    //Dla zadania 2
-    public WariantA(MatrixSpace matrixSpace, Obstacle obstaclePoints) {
-        this.matrixSpace = matrixSpace;
-        this.iterationIntegralContainer = new IterationIntegralContainer();
-        this.obstaclePoints = obstaclePoints;
-        this.type = TYPE.NEUMANN;
-
-        evaluateInitialEdgesVonNuemann();
-    }
-
     private void evaluateInitialEdges() {
         PotentialPoint[][] potentialPoints = matrixSpace.getDoubleMatrix().getMatrix();
 
-        for (int j = 0; j < potentialPoints[0].length; j++) {
-            potentialPoints[0][j].setObstacle(true);
-            potentialPoints[potentialPoints.length - 1][j].setObstacle(true);
+        //prawy brzeg
+        for (int i = 0; i < 91; i++) {
+            Double value = potentialPoints[i][0].getY();
+            //Wirowosc
+            potentialPoints[i][0].setWir(
+                    (Q / (2.0 * ni)) * (2.0 * value - 0.0 - 0.9)
+            );
 
+            //Potencjal
+            potentialPoints[i][0].setValue(
+                    (Q / (2.0 * ni)) * (Math.pow(value, 3.0) / 3.0 - (Math.pow(value, 2.0) / 2.0) * (0.0 + 0.9) + (0.0 * 0.9 * value))
+            );
         }
 
-        for (int i = 0; i < potentialPoints.length; i++) {
-            for (int j = 0; j < potentialPoints[0].length; j++) {
-                if (j == 0) { // lewy brzeg
-                    potentialPoints[i][j].setValue(1.0 * potentialPoints[i][j].getY());
-                }
-                if (j == potentialPoints[0].length - 1) { // prawy brzeg
-                    potentialPoints[i][j].setValue(1.0 * potentialPoints[i][j].getY());
-                }
+        //lewy brzeg
+        for (int i = 0; i < 91; i++) {
+            Double value = potentialPoints[i][300].getY();
+            //Wirowosc
+            potentialPoints[i][300].setWir(
+                    (Q / (2.0 * ni)) * (2.0 * value - 0.0 - 0.9)
+            );
 
-                Double potentialMinMax = potentialPoints[0][0].getValue();
-                Double potentialMinMin = potentialPoints[potentialPoints.length-1][0].getValue();
-
-                // gorny i dolny brzeg
-                if (potentialPoints[i][j].getObstacle()) {
-                    if (i != potentialPoints.length - 1) {
-                        potentialPoints[i][j].setValue(potentialMinMax);
-                    } else {
-                        potentialPoints[i][j].setValue(potentialMinMin);
-                    }
-                }
-            }
+            //Potencjal
+            potentialPoints[i][300].setValue(
+                    (Q / (2.0 * ni)) * (Math.pow(value, 3.0) / 3.0 - (Math.pow(value, 2.0) / 2.0) * (0.0 + 0.9) + (0.0 * 0.9 * value))
+            );
         }
+
+        //gorny brzeg
+        for (int i = 0; i < 301; i++) {
+            Double value = potentialPoints[0][i].getY();
+            //Wirowosc
+            potentialPoints[0][i].setWir(
+                    (Q / (2.0 * ni)) * (2.0 * value - 0.0 - 0.9)
+            );
+
+            //Potencjal
+            potentialPoints[0][i].setValue(
+                    (Q / (2.0 * ni)) * (Math.pow(value, 3.0) / 3.0 - (Math.pow(value, 2.0) / 2.0) * (0.0 + 0.9) + (0.0 * 0.9 * value))
+            );
+        }
+
+        //dolny brzeg
+        for (int i = 0; i < 301; i++) {
+            Double value = potentialPoints[90][i].getY();
+            //Wirowosc
+            potentialPoints[90][i].setWir(
+                    (Q / (2.0 * ni)) * (2.0 * value - 0.0 - 0.9)
+            );
+
+            //Potencjal
+            potentialPoints[90][i].setValue(
+                    (Q / (2.0 * ni)) * (Math.pow(value, 3.0) / 3.0 - (Math.pow(value, 2.0) / 2.0) * (0.0 + 0.9) + (0.0 * 0.9 * value))
+            );
+        }
+
         matrixSpace.getDoubleMatrix().setMatrix(potentialPoints);
     }
 
-    private void calculatePotential() {
-        if (type == TYPE.NEUMANN) {
-            evaluateEdgePotential();
-        }
+    private Double evaluateVelocity(Double y) {
+        return (Q / (2 * ni)) * (y - 0.0) * (y - 0.9);
+    }
 
+    private void calculatePotential() {
         PotentialPoint[][] potentialPoints = matrixSpace.getDoubleMatrix().getMatrix();
 
-        for (int i = potentialPoints.length - 2; i > 0 ; i--) {
+        for (int i = potentialPoints.length - 2; i > 0; i--) {
             for (int j = 1; j < potentialPoints[0].length - 1; j++) {
                 if (!matrixSpace.getDoubleMatrix().getMatrix()[i][j].getObstacle()) {
                     Double value = (potentialPoints[i - 1][j].getValue() + potentialPoints[i][j - 1].getValue() +
                             potentialPoints[i + 1][j].getValue() + potentialPoints[i][j + 1].getValue() -
-                            potentialPoints[i][j].getWir()*matrixSpace.getJump()*matrixSpace.getJump()
+                            potentialPoints[i][j].getWir() * matrixSpace.getJump() * matrixSpace.getJump()
                     ) / 4.0;
                     potentialPoints[i][j].setValue(value);
                 }
@@ -103,19 +130,63 @@ public class WariantA {
                 if (!matrixSpace.getDoubleMatrix().getMatrix()[i][j].getObstacle()) {
                     Double value = ((potentialPoints[i - 1][j].getWir() + potentialPoints[i][j - 1].getWir() +
                             potentialPoints[i + 1][j].getWir() + potentialPoints[i][j + 1].getWir()) / 4.0) -
-                            (-1.0/16.0) * (
-                                    (potentialPoints[i-1][j].getValue() - potentialPoints[i+1][j].getValue()) *
-                                            (potentialPoints[i][j+1].getWir() - potentialPoints[i][j-1].getWir()) -
-                                            (potentialPoints[i][j+1].getValue() - potentialPoints[i][j-1].getValue()) *
-                                                    (potentialPoints[i-1][j].getWir() - potentialPoints[i+1][j].getWir())
-                                    );
+                            (-1.0 / 16.0) * (
+                                    (potentialPoints[i - 1][j].getValue() - potentialPoints[i + 1][j].getValue()) *
+                                            (potentialPoints[i][j + 1].getWir() - potentialPoints[i][j - 1].getWir()) -
+                                            (potentialPoints[i][j + 1].getValue() - potentialPoints[i][j - 1].getValue()) *
+                                                    (potentialPoints[i - 1][j].getWir() - potentialPoints[i + 1][j].getWir())
+                            );
 
-                    potentialPoints[i][j].setValue(value);
+                    potentialPoints[i][j].setWir(value);
                 }
             }
         }
 
         matrixSpace.getDoubleMatrix().setMatrix(potentialPoints);
+    }
+
+    public void generateStrumienAndWirowosc() {
+        int x = 145;
+        int y = 45;
+
+        for (int i = 0; i < 100; i++) {
+            calculateWirowosc();
+            calculatePotential();
+        }
+
+        Double diffStr = 0.0;
+        Double diffWir = 0.0;
+        int k = 0;
+        PotentialPoint potentialPoint = new PotentialPoint(matrixSpace.getDoubleMatrix().getMatrix()[y][x]);
+        do {
+            calculateWirowosc();
+            calculatePotential();
+            PotentialPoint newPoint = new PotentialPoint(matrixSpace.getDoubleMatrix().getMatrix()[y][x]);
+
+            diffStr = Math.abs((potentialPoint.getValue() - newPoint.getValue()) / potentialPoint.getValue());
+            diffWir = Math.abs((potentialPoint.getWir() - newPoint.getWir()) / potentialPoint.getWir());
+
+            potentialPoint = newPoint;
+            System.out.println("Iteration:" + k++ + " diffStr: " + diffStr + " diffWir: " + diffWir);
+        } while (diffStr > 10e-7 || diffWir > 10e-7);
+
+    }
+
+    public PotentialAndWirContainer evaluatePotencjalAndWirowoscAt(int x) {
+
+        PotentialPoint[] potentialPoints = new PotentialPoint[91];
+        PotentialAndWirContainer potentialAndWirContainer = new PotentialAndWirContainer();
+
+        for (int i = 90; i > -1; i--) {
+            potentialPoints[i] = matrixSpace.getDoubleMatrix().getMatrix()[i][x];
+
+            Double wirAnal = (Q / (2.0 * ni)) * (2.0 * potentialPoints[i].getY() - 0.0 - 0.9);
+            Double potenAnal = (Q / (2.0 * ni)) * (Math.pow(potentialPoints[i].getY(), 3.0) / 3.0 - (Math.pow(potentialPoints[i].getY(), 2.0) / 2.0) * (0.0 + 0.9) + (0.0 * 0.9 * potentialPoints[i].getY()));
+
+            potentialAndWirContainer.addPoint(91 - i, potentialPoints[i].getValue(), potenAnal, potentialPoints[i].getWir(), wirAnal);
+        }
+
+        return potentialAndWirContainer;
     }
 
     private Double calculateIntegralAtIteration() {
@@ -149,129 +220,12 @@ public class WariantA {
             Double newIntegralValue = calculateIntegralAtIteration();
             this.iterationIntegralContainer.add(k++, newIntegralValue);
 
-            diff = Math.abs(newIntegralValue - currentIntegralValue)/currentIntegralValue;
+            diff = Math.abs(newIntegralValue - currentIntegralValue) / currentIntegralValue;
             currentIntegralValue = newIntegralValue;
 
         } while (diff > 10e-8);
 
         return currentIntegralValue;
-    }
-
-    private void evaluateInitialEdgesVonNuemann() {
-        PotentialPoint[][] potentialPoints = matrixSpace.getDoubleMatrix().getMatrix();
-
-        for (int i = 0; i < potentialPoints.length; i++) {
-            for (int j = 0; j < potentialPoints[0].length; j++) {
-                if (potentialPoints[i][j].getObstacle()) {
-                    potentialPoints[i][j].setValue(0.0);
-                } else {
-                    potentialPoints[i][j].setValue(1.0 * potentialPoints[i][j].getX());
-                }
-            }
-        }
-
-        matrixSpace.getDoubleMatrix().setMatrix(potentialPoints);
-
-    }
-
-    public void vonNuemannInitialization() {
-        PotentialPoint[][] potentialPoints = matrixSpace.getDoubleMatrix().getMatrix();
-
-        for (int y = 0; y < potentialPoints.length; y++) {
-            if (y < ((int) (matrixSpace.getBox().getyRange().getY() - this.obstaclePoints.getMyPairs().get(0).getY()) / matrixSpace.getJump()) &&
-                    y >= 0) {
-
-                int temp = (int) (this.obstaclePoints.getMyPairs().get(0).getX() / matrixSpace.getJump())-1;
-
-                potentialPoints[y][temp].setValue(
-                        potentialPoints[y][temp-1].getValue()
-                );
-            }
-
-            if (y < ((int) (matrixSpace.getBox().getyRange().getY() -this.obstaclePoints.getMyPairs().get(2).getY()) / matrixSpace.getJump()) &&
-                    y > ((int) (matrixSpace.getBox().getyRange().getY() -this.obstaclePoints.getMyPairs().get(1).getY()) / matrixSpace.getJump())) {
-
-                int temp = ((int) (this.obstaclePoints.getMyPairs().get(2).getX() / matrixSpace.getJump()))-1;
-
-                potentialPoints[y][temp].setValue(
-                        potentialPoints[y][temp-1].getValue()
-                );
-            }
-
-            if (y < ((int) (matrixSpace.getBox().getyRange().getY() - this.obstaclePoints.getMyPairs().get(3).getY()) / matrixSpace.getJump()) &&
-                    y >= 0) {
-
-                int temp = (int) ((this.obstaclePoints.getMyPairs().get(3).getX()) / matrixSpace.getJump())-1;
-
-                potentialPoints[y][temp].setValue(
-                        potentialPoints[y][temp+1].getValue()
-                );
-            }
-        }
-
-        for (int x = (int) (this.obstaclePoints.getMyPairs().get(0).getX() / matrixSpace.getJump());
-             x < ((int) (this.obstaclePoints.getMyPairs().get(1).getX()) / matrixSpace.getJump())-1;
-             x++) {
-
-            int temp = (int) (potentialPoints.length - this.obstaclePoints.getMyPairs().get(0).getY() / matrixSpace.getJump());
-
-            potentialPoints[temp][x].setValue(
-                    potentialPoints[temp+1][x].getValue()
-            );
-        }
-
-        for (int x = (int) (this.obstaclePoints.getMyPairs().get(2).getX() / matrixSpace.getJump());
-             x < ((int) (this.obstaclePoints.getMyPairs().get(3).getX()) / matrixSpace.getJump())-1;
-             x++) {
-
-            int temp = (int) (potentialPoints.length - this.obstaclePoints.getMyPairs().get(2).getY() / matrixSpace.getJump());
-
-            potentialPoints[temp][x].setValue(
-                    potentialPoints[temp+1][x].getValue()
-            );
-        }
-
-        int iA = (int) (this.obstaclePoints.getMyPairs().get(0).getX() / matrixSpace.getJump())-1;
-        int jA = potentialPoints.length - (int) (this.obstaclePoints.getMyPairs().get(0).getY() / matrixSpace.getJump());
-
-        potentialPoints[jA][iA].setValue(
-                (potentialPoints[jA][iA-1].getValue() + potentialPoints[jA+1][iA].getValue())/2.0
-        );
-
-        int iC = (int) (this.obstaclePoints.getMyPairs().get(2).getX() / matrixSpace.getJump())-1;
-        int jC = potentialPoints.length - (int) (this.obstaclePoints.getMyPairs().get(2).getY() / matrixSpace.getJump());
-
-        potentialPoints[jC][iC].setValue(
-                (potentialPoints[jC][iC-1].getValue() + potentialPoints[jC+1][iC].getValue())/2.0
-        );
-
-        int iD = (int) (this.obstaclePoints.getMyPairs().get(3).getX() / matrixSpace.getJump())-1;
-        int jD = potentialPoints.length - (int) (this.obstaclePoints.getMyPairs().get(3).getY() / matrixSpace.getJump());
-
-        potentialPoints[jD][iD].setValue(
-                (potentialPoints[jD][iD+1].getValue() + potentialPoints[jD+1][iD].getValue())/2.0
-        );
-
-        matrixSpace.getDoubleMatrix().setMatrix(potentialPoints);
-    }
-
-    public void evaluateEdgePotential() {
-        PotentialPoint[][] potentialPoints = matrixSpace.getDoubleMatrix().getMatrix();
-
-        for (int i = 0; i < potentialPoints[0].length; i++) {
-            if ((i >= 0 && i <= ((int) (this.obstaclePoints.getMyPairs().get(0).getX()) / matrixSpace.getJump() - 2)) ||
-                    (i >= (int) this.obstaclePoints.getMyPairs().get(3).getX() / matrixSpace.getJump() ) && i <= potentialPoints[0].length - 1) {
-                potentialPoints[0][i].setValue(
-                        potentialPoints[1][i].getValue()
-                );
-            }
-            potentialPoints[potentialPoints.length - 1][i].setValue(
-                    potentialPoints[potentialPoints.length - 2][i].getValue()
-            );
-        }
-        matrixSpace.getDoubleMatrix().setMatrix(potentialPoints);
-
-        vonNuemannInitialization();
     }
 
     public MatrixSpace getMatrixSpace() {

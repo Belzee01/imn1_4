@@ -31,30 +31,28 @@ public class Main {
                 .addNewObstaclePoint(116.0, 90.0)
                 .addNewObstaclePoint(85.0, 90.0);
 
-        matrixSpace.addObstacle(obstacle);
-
-        PotentialPoint[][] temp = matrixSpace.getDoubleMatrix().getMatrix();
-
-        for (PotentialPoint[] p : temp) {
-            for (int i = 0; i < p.length; i++) {
-                System.out.print(p[i].getObstacle() + "\t\t");
-            }
-            System.out.println();
-        }
+        //matrixSpace.addObstacle(obstacle);
 
         WariantA wariantA = new WariantA(matrixSpace);
-//
-//        System.out.println(wariantA.calculateIntegral());
-//
-//        PotentialPoint[][] temp = wariantA.getMatrixSpace().getDoubleMatrix().getMatrix();
-//
-//        for (PotentialPoint[] p : temp) {
-//            System.out.println(Arrays.toString(p));
-//        }
-//
-//        CustomFileWriter.writeToFile(
-//                new AdvancedOutputFile(temp, boundingBox, 1.0, "warA_pot.dat")
-//        );
+
+        wariantA.generateStrumienAndWirowosc();
+        PotentialPoint[][] temp = wariantA.getMatrixSpace().getDoubleMatrix().getMatrix();
+
+        CustomFileWriter.writeToFile(
+                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_pot1.dat")
+        );
+
+        CustomFileWriter.writeToFile(
+                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_wir1.dat", 0)
+        );
+
+        CustomFileWriter.writeToFile(
+                wariantA.evaluatePotencjalAndWirowoscAt(50).toString(), "warA_i50.dat"
+        );
+
+        CustomFileWriter.writeToFile(
+                wariantA.evaluatePotencjalAndWirowoscAt(250).toString(), "warA_i250.dat"
+        );
 //
 //        CustomFileWriter.writeToFile(wariantA.getIterationIntegralContainer(), "warA_integral.dat");
 

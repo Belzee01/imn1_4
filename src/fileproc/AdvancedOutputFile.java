@@ -50,6 +50,27 @@ public class AdvancedOutputFile<T> {
         this.filename = filename;
     }
 
+    public AdvancedOutputFile(PotentialPoint[][] wir, BoundingBox box, double delta, String filename, int k) {
+        this.sections = new ArrayList<>();
+
+        int rows = (int) ((box.getyRange().getY() - box.getyRange().getX()) / delta) + 1;
+
+        int y = rows-1;
+        for (double i = box.getyRange().getX(); i <= box.getyRange().getY(); i += delta) {
+            int x = 0;
+            Section<Double> section = new Section<>();
+            for (double j = box.getxRange().getX(); j <= box.getxRange().getY(); j += delta) {
+
+                section.addRecord(new Record<>(j, i, wir[y][x].getWir()));
+                x++;
+            }
+            y--;
+            sections.add(section);
+        }
+
+        this.filename = filename;
+    }
+
     public AdvancedOutputFile(double[][] potential, int numberOfPoints, String filename) {
         this.sections = new ArrayList<>();
 
