@@ -63,27 +63,27 @@ public class MatrixSpace {
 
         for (int i = 0; i < numberOfObstacles - 1; i++) {
             if ((pairs.get(i).getX() - pairs.get(i + 1).getX()) < 0.0) {
-                for (double x = pairs.get(i).getX()/jump; x < pairs.get(i + 1).getX()/jump; x += 1.0) {
-                    int indexX = (int) x;
-                    int indexY = getIndexY(pairs.get(i).getY());
+                for (double x = pairs.get(i).getX()*jump; x <= pairs.get(i + 1).getX()*jump; x += jump) {
+                    int indexX = (int) (x/jump);
+                    int indexY = getIndexY(pairs.get(i).getY())-1;
                     this.regionMatrix.setValue(indexY, indexX, 1);
                 }
             } else if ((pairs.get(i).getX() - pairs.get(i + 1).getX()) > 0.0) {
-                for (double x = pairs.get(i).getX()/jump; x > pairs.get(i + 1).getX()/jump; x -= 1.0) {
-                    int indexX = (int) x;
-                    int indexY = getIndexY(pairs.get(i).getY());
+                for (double x = pairs.get(i).getX()*jump; x >= pairs.get(i + 1).getX()*jump; x -= jump) {
+                    int indexX = (int) (x/jump);
+                    int indexY = getIndexY(pairs.get(i).getY())-1;
                     this.regionMatrix.setValue(indexY, indexX, 1);
                 }
             } else if ((pairs.get(i).getY() - pairs.get(i + 1).getY()) < 0.0) {
-                for (double y = pairs.get(i).getY()/jump; y < pairs.get(i + 1).getY()/jump; y += 1.0) {
+                for (double y = pairs.get(i).getY()*jump; y <= pairs.get(i + 1).getY()*jump; y += jump) {
                     int indexX = getIndexX(pairs.get(i).getX());
-                    int indexY = (int) (rows - y) - 1; //getIndexY(y);
+                    int indexY = (int) (rows - y/jump) - 1; //getIndexY(y);
                     this.regionMatrix.setValue(indexY, indexX, 1);
                 }
             } else if ((pairs.get(i).getY() - pairs.get(i + 1).getY()) > 0.0) {
-                for (double y = pairs.get(i).getY()/jump; y > pairs.get(i + 1).getY()/jump; y -= 1.0) {
+                for (double y = pairs.get(i).getY()*jump; y >= pairs.get(i + 1).getY()*jump-jump; y -= jump) {
                     int indexX = getIndexX(pairs.get(i).getX());
-                    int indexY = (int) (rows - y) - 1;
+                    int indexY = (int) (rows - y/jump) - 1;
                     this.regionMatrix.setValue(indexY, indexX, 1);
                 }
             }
@@ -155,11 +155,11 @@ public class MatrixSpace {
     }
 
     private int getIndexX(double x) {
-        return (int) Math.round(((x) / this.jump));
+        return (int) Math.round(((x)));
     }
 
     private int getIndexY(double y) {
-        return rows - (int) ((y) / this.jump) -1; // for wariant A +0.0
+        return rows - (int) ((y)); // for wariant A +0.0
     }
 
     public IntegerMatrix getIntegerMatrix() {
