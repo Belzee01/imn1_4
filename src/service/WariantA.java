@@ -94,6 +94,14 @@ public class WariantA {
             }
         }
 
+        for (int i = 1; i < 90; i++) {
+            for (int j = 1; j < 300; j++) {
+                if (!potentialPoints[i][j].getObstacle()) {
+                    potentialPoints[i][j].setValue((Q / (2.0 * ni)) * (Math.pow(potentialPoints[i][j].getY(), 3.0) / 3.0 - (Math.pow(potentialPoints[i][j].getY(), 2.0) / 2.0) * (0.0 + 0.9) + (0.0 * 0.9 * potentialPoints[i][j].getY())));
+                }
+            }
+        }
+
         matrixSpace.getDoubleMatrix().setMatrix(potentialPoints);
     }
 

@@ -87,7 +87,7 @@ public class PotentialPoint {
 
     @Override
     public String toString() {
-        return String.valueOf(wir);
+        return String.valueOf(value);
     }
 }
 
