@@ -63,27 +63,27 @@ public class MatrixSpace {
 
         for (int i = 0; i < numberOfObstacles - 1; i++) {
             if ((pairs.get(i).getX() - pairs.get(i + 1).getX()) < 0.0) {
-                for (double x = pairs.get(i).getX()*jump; x <= pairs.get(i + 1).getX()*jump; x += jump) {
-                    int indexX = (int) (x/jump);
+                for (double x = pairs.get(i).getX(); x <= pairs.get(i + 1).getX(); x += 1.0) {
+                    int indexX = (int) (x);
                     int indexY = getIndexY(pairs.get(i).getY())-1;
                     this.regionMatrix.setValue(indexY, indexX, 1);
                 }
             } else if ((pairs.get(i).getX() - pairs.get(i + 1).getX()) > 0.0) {
-                for (double x = pairs.get(i).getX()*jump; x >= pairs.get(i + 1).getX()*jump; x -= jump) {
-                    int indexX = (int) (x/jump);
+                for (double x = pairs.get(i).getX(); x >= pairs.get(i + 1).getX(); x -= 1.0) {
+                    int indexX = (int) (x);
                     int indexY = getIndexY(pairs.get(i).getY())-1;
                     this.regionMatrix.setValue(indexY, indexX, 1);
                 }
             } else if ((pairs.get(i).getY() - pairs.get(i + 1).getY()) < 0.0) {
-                for (double y = pairs.get(i).getY()*jump; y <= pairs.get(i + 1).getY()*jump; y += jump) {
+                for (double y = pairs.get(i).getY(); y <= pairs.get(i + 1).getY(); y += 1.0) {
                     int indexX = getIndexX(pairs.get(i).getX());
-                    int indexY = (int) (rows - y/jump) - 1; //getIndexY(y);
+                    int indexY = (int) (rows - y) - 1; //getIndexY(y);
                     this.regionMatrix.setValue(indexY, indexX, 1);
                 }
             } else if ((pairs.get(i).getY() - pairs.get(i + 1).getY()) > 0.0) {
-                for (double y = pairs.get(i).getY()*jump; y >= pairs.get(i + 1).getY()*jump-jump; y -= jump) {
+                for (double y = pairs.get(i).getY(); y >= pairs.get(i + 1).getY(); y -= 1.0) {
                     int indexX = getIndexX(pairs.get(i).getX());
-                    int indexY = (int) (rows - y/jump) - 1;
+                    int indexY = (int) (rows - y) - 1;
                     this.regionMatrix.setValue(indexY, indexX, 1);
                 }
             }

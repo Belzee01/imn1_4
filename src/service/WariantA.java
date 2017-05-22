@@ -103,69 +103,69 @@ public class WariantA {
 
         // Gorny A i G
         for (int i = 0; i < 84; i++) {
-            potentialPoints[0][i].setValue(
-                    2*(potentialPoints[1][i].getValue() - potentialPoints[0][i].getValue())/matrixSpace.getJump()*matrixSpace.getJump()
+            potentialPoints[0][i].setWir(
+                    2*(potentialPoints[1][i].getValue() - potentialPoints[0][i].getValue())/(matrixSpace.getJump()*matrixSpace.getJump())
             );
         }
 
         for (int i = 117; i < 301; i++) {
-            potentialPoints[0][i].setValue(
-                    2*(potentialPoints[1][i].getValue() - potentialPoints[0][i].getValue())/matrixSpace.getJump()*matrixSpace.getJump()
+            potentialPoints[0][i].setWir(
+                    2*(potentialPoints[1][i].getValue() - potentialPoints[0][i].getValue())/(matrixSpace.getJump()*matrixSpace.getJump())
             );
         }
 
         //Dolny
         for (int i = 0; i < 301; i++) {
-            potentialPoints[90][i].setValue(
-                    2*(potentialPoints[89][i].getValue() - potentialPoints[89][i].getValue())/matrixSpace.getJump()*matrixSpace.getJump()
+            potentialPoints[90][i].setWir(
+                    2*(potentialPoints[89][i].getValue() - potentialPoints[89][i].getValue())/(matrixSpace.getJump()*matrixSpace.getJump())
             );
         }
 
         //Zastawka B
         for (int i = 1; i < 20; i++) {
-            potentialPoints[i][85].setValue(
-                    2*(potentialPoints[i][84].getValue() - potentialPoints[i][85].getValue())/matrixSpace.getJump()*matrixSpace.getJump()
+            potentialPoints[i][85].setWir(
+                    2*(potentialPoints[i][84].getValue() - potentialPoints[i][85].getValue())/(matrixSpace.getJump()*matrixSpace.getJump())
             );
         }
 
         //Zastawka D
         for (int i = 21; i < 40; i++) {
-            potentialPoints[i][101].setValue(
-                    2*(potentialPoints[i][100].getValue() - potentialPoints[i][101].getValue())/matrixSpace.getJump()*matrixSpace.getJump()
+            potentialPoints[i][101].setWir(
+                    2*(potentialPoints[i][100].getValue() - potentialPoints[i][101].getValue())/(matrixSpace.getJump()*matrixSpace.getJump())
             );
         }
 
         //Zastawka F
         for (int i = 1; i < 40; i++) {
-            potentialPoints[i][116].setValue(
-                    2*(potentialPoints[i][117].getValue() - potentialPoints[i][116].getValue())/matrixSpace.getJump()*matrixSpace.getJump()
+            potentialPoints[i][116].setWir(
+                    2*(potentialPoints[i][117].getValue() - potentialPoints[i][116].getValue())/(matrixSpace.getJump()*matrixSpace.getJump())
             );
         }
 
         //Zastawka C
         for (int i = 86; i < 101; i++) {
-            potentialPoints[20][i].setValue(
-                    2*(potentialPoints[21][i].getValue() - potentialPoints[20][i].getValue())/matrixSpace.getJump()*matrixSpace.getJump()
+            potentialPoints[20][i].setWir(
+                    2*(potentialPoints[21][i].getValue() - potentialPoints[20][i].getValue())/(matrixSpace.getJump()*matrixSpace.getJump())
             );
         }
 
         //Zastawka E
         for (int i = 102; i < 116; i++) {
-            potentialPoints[40][i].setValue(
-                    2*(potentialPoints[41][i].getValue() - potentialPoints[40][i].getValue())/matrixSpace.getJump()*matrixSpace.getJump()
+            potentialPoints[40][i].setWir(
+                    2*(potentialPoints[41][i].getValue() - potentialPoints[40][i].getValue())/(matrixSpace.getJump()*matrixSpace.getJump())
             );
         }
 
         //Punkt wspolne AB, BC, CD, DE, EF, FG
-        potentialPoints[20][85].setValue(
+        potentialPoints[20][85].setWir(
                 (potentialPoints[19][85].getValue() + potentialPoints[20][86].getValue())/2.0
         );
 
-        potentialPoints[40][101].setValue(
+        potentialPoints[40][101].setWir(
                 (potentialPoints[39][101].getValue() + potentialPoints[40][102].getValue())/2.0
         );
 
-        potentialPoints[40][116].setValue(
+        potentialPoints[40][116].setWir(
                 (potentialPoints[39][116].getValue() + potentialPoints[40][115].getValue())/2.0
         );
 
@@ -238,10 +238,7 @@ public class WariantA {
         return (Q / (2 * ni)) * (y - 0.0) * (y - 0.9);
     }
 
-    private void calculatePotential() {
-        if (type == TYPE.OBSTACLE) {
-            evaluateWirEdge();
-        }
+    public void calculatePotential() {
 
         PotentialPoint[][] potentialPoints = matrixSpace.getDoubleMatrix().getMatrix();
 
@@ -264,7 +261,10 @@ public class WariantA {
         matrixSpace.getDoubleMatrix().setMatrix(potentialPoints);
     }
 
-    private void calculateWirowosc() {
+    public void calculateWirowosc() {
+        if (type == TYPE.OBSTACLE) {
+            evaluateWirEdge();
+        }
         PotentialPoint[][] potentialPoints = matrixSpace.getDoubleMatrix().getMatrix();
 
         for (int i = potentialPoints.length - 2; i > 0; i--) {
@@ -274,8 +274,8 @@ public class WariantA {
                         && !matrixSpace.getDoubleMatrix().getMatrix()[i-1][j].getObstacle()
                         && !matrixSpace.getDoubleMatrix().getMatrix()[i][j+1].getObstacle()
                         && !matrixSpace.getDoubleMatrix().getMatrix()[i][j-1].getObstacle()) {
-                    Double value = ((potentialPoints[i - 1][j].getWir() + potentialPoints[i][j - 1].getWir() +
-                            potentialPoints[i + 1][j].getWir() + potentialPoints[i][j + 1].getWir()) / 4.0) -
+                    Double value = ((potentialPoints[i][j+1].getWir() + potentialPoints[i][j - 1].getWir() +
+                            potentialPoints[i + 1][j].getWir() + potentialPoints[i-1][j].getWir()) / 4.0) -
                             (-1.0 / 16.0) * (
                                     (potentialPoints[i - 1][j].getValue() - potentialPoints[i + 1][j].getValue()) *
                                             (potentialPoints[i][j + 1].getWir() - potentialPoints[i][j - 1].getWir()) -
@@ -295,10 +295,10 @@ public class WariantA {
         int x = 145;
         int y = 45;
 
-//        for (int i = 0; i < 100; i++) {
-//            calculateWirowosc();
-//            calculatePotential();
-//        }
+        for (int i = 0; i < 100; i++) {
+            calculateWirowosc();
+            calculatePotential();
+        }
 
         Double diffStr = 0.0;
         Double diffWir = 0.0;
