@@ -79,7 +79,7 @@ set size ratio -1
 set title 'Zad2. Przeplyw potencjalny'
 set contours
 set contour base
-set cntrparam levels 30
+set cntrparam levels 100
 unset clabel
 set pm3d
 splot 'warA_pot2_Q1.dat' u 1:2:3 w pm3d lt -1 t ''
@@ -94,7 +94,7 @@ set size ratio -1
 set title 'Zad2. Przeplyw potencjalny'
 set contours
 set contour base
-set cntrparam levels 30
+set cntrparam levels 100
 unset clabel
 set pm3d
 splot 'warA_pot2_Q2.dat' u 1:2:3 w pm3d lt -1 t ''
@@ -108,7 +108,7 @@ set size ratio -1
 set title 'Zad2. Przeplyw potencjalny'
 set contours
 set contour base
-set cntrparam levels 30
+set cntrparam levels 100
 unset clabel
 set pm3d
 splot 'warA_pot2_Q3.dat' u 1:2:3 w pm3d lt -1 t ''
