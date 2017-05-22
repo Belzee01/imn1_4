@@ -5,6 +5,7 @@ import service.MatrixSpace;
 import service.WariantA;
 import service.WariantB;
 
+import java.nio.file.Watchable;
 import java.util.Arrays;
 
 import static service.WariantA.TYPE.OBSTACLE;
@@ -116,13 +117,46 @@ public class Main {
     }
 
     public static void zestawB() {
+        final BoundingBox boundingBox = new BoundingBox(new MyPair(0.0, 4.0), new MyPair(0.0, 2.0));
+
+        MatrixSpace matrixSpace = new MatrixSpace(
+                //                                  rows          columns
+                MatrixBuilder.buildIntegerMatrix(201, 401),
+                MatrixBuilder.buildDoubleMatrix(201, 401),
+                boundingBox,
+                0.01
+        );
+
+
+        final Obstacle obstacle1 = new Obstacle()
+                .addNewObstaclePoint(275.0, 50.0)
+                .addNewObstaclePoint(400.0, 50.0) //A
+                .addNewObstaclePoint(400.0, 200.0) //B
+                .addNewObstaclePoint(275.0, 200.0) //C
+                .addNewObstaclePoint(275.0, 50.0);
+
+        final Obstacle obstacle2 = new Obstacle()
+                .addNewObstaclePoint(0.0, 50.0)
+                .addNewObstaclePoint(125.0, 50.0) //A
+                .addNewObstaclePoint(125.0, 200.0) //B
+                .addNewObstaclePoint(0.0, 200.0) //C
+                .addNewObstaclePoint(0.0, 50.0);
+
+
+        WariantB wariantB = new WariantB(matrixSpace);
+
+        PotentialPoint[][] temp = wariantB.getMatrixSpace().getDoubleMatrix().getMatrix();
+
+        for (PotentialPoint[] p : temp) {
+            System.out.println(Arrays.toString(p));
+        }
 
     }
 
     public static void main(String[] args) {
 
 
-        zestawA();
+        zestawB();
 
         System.out.println("Hello World!");
     }

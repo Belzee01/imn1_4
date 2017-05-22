@@ -276,7 +276,7 @@ public class WariantA {
                         && !matrixSpace.getDoubleMatrix().getMatrix()[i][j-1].getObstacle()) {
                     Double value = ((potentialPoints[i][j+1].getWir() + potentialPoints[i][j - 1].getWir() +
                             potentialPoints[i + 1][j].getWir() + potentialPoints[i-1][j].getWir()) / 4.0) -
-                            (-1.0 / 16.0) * (
+                            (1.0 / 16.0) * (
                                     (potentialPoints[i - 1][j].getValue() - potentialPoints[i + 1][j].getValue()) *
                                             (potentialPoints[i][j + 1].getWir() - potentialPoints[i][j - 1].getWir()) -
                                             (potentialPoints[i][j + 1].getValue() - potentialPoints[i][j - 1].getValue()) *
