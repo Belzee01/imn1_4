@@ -103,7 +103,6 @@ public class Main {
         wariantA1 = new WariantA(matrixSpace, -400.0, OBSTACLE);
 
         wariantA1.generateStrumienAndWirowosc();
-
         temp = wariantA1.getMatrixSpace().getDoubleMatrix().getMatrix();
 
         for (PotentialPoint[] p : temp) {
