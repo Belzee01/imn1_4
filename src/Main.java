@@ -13,8 +13,6 @@ import static service.WariantA.TYPE.OBSTACLE;
 public class Main {
 
     public static void zestawA() {
-        final BoundingBox boundingBox = new BoundingBox(new MyPair(0.0, 3.0), new MyPair(0.0, 0.9));
-
         MatrixSpace matrixSpace = new MatrixSpace(
                 //                                  rows          columns
                 MatrixBuilder.buildIntegerMatrix(301, 91),
@@ -27,7 +25,7 @@ public class Main {
 
         for (int i = 0; i < potentialPoints.length; i++) {
             for (int j = 0; j < potentialPoints[0].length; j++) {
-                System.out.print(potentialPoints[i][j].getValue() + "\t");
+                System.out.print(potentialPoints[i][j] + "\t");
             }
             System.out.println();
         }
@@ -46,6 +44,14 @@ public class Main {
 //
 //        CustomFileWriter.writeToFile(
 //                wariantA.generateVelocities().toString(), "warA_vel.dat"
+//        );
+//
+//        CustomFileWriter.writeToFile(
+//                wariantA.evaluatePotencjalAndWirowoscAt(50).toString(), "warA_pot_i_50.dat"
+//        );
+//
+//        CustomFileWriter.writeToFile(
+//                wariantA.evaluatePotencjalAndWirowoscAt(250).toString(), "warA_pot_i_250.dat"
 //        );
     }
 

@@ -1,6 +1,5 @@
 package fileproc;
 
-import helpers.BoundingBox;
 import helpers.PotentialPoint;
 
 import java.util.ArrayList;

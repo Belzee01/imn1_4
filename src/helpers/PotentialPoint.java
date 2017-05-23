@@ -87,7 +87,7 @@ public class PotentialPoint {
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        return "[" + x + " " + y + " " + (this.isObstacle?1:0)+"] ";
     }
 }
 
