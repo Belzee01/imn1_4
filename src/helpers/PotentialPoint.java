@@ -1,8 +1,5 @@
 package helpers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PotentialPoint {
 
     private Double x;
@@ -87,7 +84,7 @@ public class PotentialPoint {
 
     @Override
     public String toString() {
-        return "[" + x + " " + y + " " + (this.isObstacle?1:0)+"] ";
+        return "[" + x + " " + y + " " + wir+" " + value+ "] ";
     }
 }
 
