@@ -22,30 +22,30 @@ public class Main {
                 0.01
         );
 
-//        WariantA wariantA = new WariantA(matrixSpace);
-//
-//        wariantA.generateStrumienAndWirowosc();
-//        PotentialPoint[][] temp = wariantA.getMatrixSpace().getDoubleMatrix().getMatrix();
-//
-//        CustomFileWriter.writeToFile(
-//                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_pot1.dat")
-//        );
-//
-//        CustomFileWriter.writeToFile(
-//                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_wir1.dat", 0)
-//        );
-//
-//        CustomFileWriter.writeToFile(
-//                wariantA.evaluatePotencjalAndWirowoscAt(50).toString(), "warA_i50.dat"
-//        );
-//
-//        CustomFileWriter.writeToFile(
-//                wariantA.evaluatePotencjalAndWirowoscAt(250).toString(), "warA_i250.dat"
-//        );
-//
-//        CustomFileWriter.writeToFile(
-//                wariantA.generateVelocities().toString(), "warA_vel1.dat"
-//        );
+        WariantA wariantA = new WariantA(matrixSpace);
+
+        wariantA.generateStrumienAndWirowosc();
+        PotentialPoint[][] temp = wariantA.getMatrixSpace().getDoubleMatrix().getMatrix();
+
+        CustomFileWriter.writeToFile(
+                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_pot1.dat")
+        );
+
+        CustomFileWriter.writeToFile(
+                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_wir1.dat", 0)
+        );
+
+        CustomFileWriter.writeToFile(
+                wariantA.evaluatePotencjalAndWirowoscAt(50).toString(), "warA_i50.dat"
+        );
+
+        CustomFileWriter.writeToFile(
+                wariantA.evaluatePotencjalAndWirowoscAt(250).toString(), "warA_i250.dat"
+        );
+
+        CustomFileWriter.writeToFile(
+                wariantA.generateVelocities().toString(), "warA_vel1.dat"
+        );
 
 
         ///Zadanie 2
@@ -69,40 +69,40 @@ public class Main {
         matrixSpace.addObstacle(obstacle);
 
 
-        ///// Q = -1.0
-//        WariantA wariantA1 = new WariantA(matrixSpace, -1.0, OBSTACLE);
-//
-//        wariantA1.generateStrumienAndWirowosc();
-//
-//        PotentialPoint[][] temp = wariantA1.getMatrixSpace().getDoubleMatrix().getMatrix();
-//
-//        for (PotentialPoint[] p : temp) {
-//            System.out.println(Arrays.toString(p));
-//        }
-//
-//        CustomFileWriter.writeToFile(
-//                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_pot2_Q1.dat")
-//        );
-//
-//        ///// Q = -150.0
-//        wariantA1 = new WariantA(matrixSpace, -150.0, OBSTACLE);
-//
-//        wariantA1.generateStrumienAndWirowosc();
-//
-//        temp = wariantA1.getMatrixSpace().getDoubleMatrix().getMatrix();
-//
-//        for (PotentialPoint[] p : temp) {
-//            System.out.println(Arrays.toString(p));
-//        }
-//
-//        CustomFileWriter.writeToFile(
-//                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_pot2_Q2.dat")
-//        );
-//
-//        ///// Q = -400.0
-        WariantA wariantA1 = new WariantA(matrixSpace, -400.0, OBSTACLE);
+        /// Q = -1.0
+         WariantA wariantA1 = new WariantA(matrixSpace, -1.0, OBSTACLE);
+
         wariantA1.generateStrumienAndWirowosc();
-        PotentialPoint[][] temp = wariantA1.getMatrixSpace().getDoubleMatrix().getMatrix();
+
+         temp = wariantA1.getMatrixSpace().getDoubleMatrix().getMatrix();
+
+        for (PotentialPoint[] p : temp) {
+            System.out.println(Arrays.toString(p));
+        }
+
+        CustomFileWriter.writeToFile(
+                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_pot2_Q1.dat")
+        );
+
+        ///// Q = -150.0
+        wariantA1 = new WariantA(matrixSpace, -150.0, OBSTACLE);
+
+        wariantA1.generateStrumienAndWirowosc();
+
+        temp = wariantA1.getMatrixSpace().getDoubleMatrix().getMatrix();
+
+        for (PotentialPoint[] p : temp) {
+            System.out.println(Arrays.toString(p));
+        }
+
+        CustomFileWriter.writeToFile(
+                new AdvancedOutputFile(temp, boundingBox, 0.01, "warA_pot2_Q2.dat")
+        );
+
+        ///// Q = -400.0
+        wariantA1 = new WariantA(matrixSpace, -400.0, OBSTACLE);
+        wariantA1.generateStrumienAndWirowosc();
+        temp = wariantA1.getMatrixSpace().getDoubleMatrix().getMatrix();
 
         for (PotentialPoint[] p : temp) {
             System.out.println(Arrays.toString(p));
