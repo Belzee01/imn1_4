@@ -12,16 +12,13 @@ public class AdvancedOutputFile<T> {
 
     private String filename;
 
-    public AdvancedOutputFile(double[][] potential, BoundingBox box, double delta, String filename) {
+    public AdvancedOutputFile(PotentialPoint[][] potential, double delta, String filename) {
         this.sections = new ArrayList<>();
 
-        for (double i = box.getyRange().getX(); i <= box.getyRange().getY(); i += delta) {
+        for (double i = 0; i < potential.length; i+=1.0) {
             Section<Double> section = new Section<>();
-            for (double j = box.getxRange().getX(); j <= box.getxRange().getY(); j += delta) {
-                int indexX = (int) ((i + box.getyRange().getY())/delta);
-                int indexY = (int) ((j + box.getxRange().getY())/delta);
-
-                section.addRecord(new Record<>(i, j, potential[indexX][indexY]));
+            for (double j = 0; j < potential[0].length; j+=1.0) {
+                section.addRecord(new Record<>(i*delta, j*delta, potential[(int)i][(int)j].getValue()));
             }
             sections.add(section);
         }
@@ -29,42 +26,14 @@ public class AdvancedOutputFile<T> {
         this.filename = filename;
     }
 
-    public AdvancedOutputFile(PotentialPoint[][] potential, BoundingBox box, double delta, String filename) {
+    public AdvancedOutputFile(PotentialPoint[][] wir, double delta, String filename, int k) {
         this.sections = new ArrayList<>();
 
-        int rows = (int) ((box.getyRange().getY() - box.getyRange().getX()) / delta) + 1;
-
-        int y = rows-1;
-        for (double i = box.getyRange().getX(); i <= box.getyRange().getY(); i += delta) {
-            int x = 0;
+        for (double i = 0; i < wir.length; i+=1.0) {
             Section<Double> section = new Section<>();
-            for (double j = box.getxRange().getX(); j <= box.getxRange().getY(); j += delta) {
-
-                section.addRecord(new Record<>(j, i, potential[y][x].getValue()));
-                x++;
+            for (double j = 0; j < wir[0].length; j+=1.0) {
+                section.addRecord(new Record<>(i*delta, j*delta, wir[(int)i][(int)j].getWir()));
             }
-            y--;
-            sections.add(section);
-        }
-
-        this.filename = filename;
-    }
-
-    public AdvancedOutputFile(PotentialPoint[][] wir, BoundingBox box, double delta, String filename, int k) {
-        this.sections = new ArrayList<>();
-
-        int rows = (int) ((box.getyRange().getY() - box.getyRange().getX()) / delta) + 1;
-
-        int y = rows-1;
-        for (double i = box.getyRange().getX(); i <= box.getyRange().getY(); i += delta) {
-            int x = 0;
-            Section<Double> section = new Section<>();
-            for (double j = box.getxRange().getX(); j <= box.getxRange().getY(); j += delta) {
-
-                section.addRecord(new Record<>(j, i, wir[y][x].getWir()));
-                x++;
-            }
-            y--;
             sections.add(section);
         }
 
