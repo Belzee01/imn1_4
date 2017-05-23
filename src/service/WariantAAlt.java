@@ -234,7 +234,6 @@ public class WariantAAlt {
         for (int i = 1; i < 300; i++) {
             for (int j = 1; j < 90; j++) {
                 if (!matrixSpace.getDoubleMatrix().getMatrix()[i][j].getObstacle()) {
-//                if (checkBounds(i, j)) {
                     Double value = (((potentialPoints[i + 1][j].getValue() +
                             potentialPoints[i - 1][j].getValue() +
                             potentialPoints[i][j - 1].getValue() +
@@ -254,7 +253,6 @@ public class WariantAAlt {
         for (int i = 1; i < 300; i++) {
             for (int j = 1; j < 90; j++) {
                 if (!matrixSpace.getDoubleMatrix().getMatrix()[i][j].getObstacle()) {
-//                if (checkBounds(i, j)) {
                     Double value = ((potentialPoints[i + 1][j].getWir() +
                             potentialPoints[i - 1][j].getWir() +
                             potentialPoints[i][j - 1].getWir() +
