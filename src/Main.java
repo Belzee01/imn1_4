@@ -1,175 +1,182 @@
 import fileproc.AdvancedOutputFile;
 import fileproc.CustomFileWriter;
-import helpers.*;
+import helpers.MatrixBuilder;
+import helpers.Obstacle;
+import helpers.PotentialPoint;
 import service.MatrixSpace;
-import service.WariantA;
-import service.WariantAAlt;
-import service.WariantB;
-
-import java.util.Arrays;
-
-import static service.WariantA.TYPE.OBSTACLE;
+import service.WariantBAlt;
 
 public class Main {
 
-    public static void zestawA() {
-        MatrixSpace matrixSpace = new MatrixSpace(
+    public static void zestawB() {
+
+        ///Zadanie 1
+        MatrixSpace matrixSpace1 = new MatrixSpace(
                 //                                  rows          columns
-                MatrixBuilder.buildIntegerMatrix(301, 91),
-                MatrixBuilder.buildDoubleMatrix(301, 91),
+                MatrixBuilder.buildIntegerMatrix(401, 201),
+                MatrixBuilder.buildDoubleMatrix(401, 201),
                 0.01
         );
 
-        WariantAAlt wariantA = new WariantAAlt(matrixSpace);
+        int i1 = 125;
+        int i2 = 126;
 
-        wariantA.executeTaskOne();
+        final Obstacle obstacle1 = new Obstacle()
+                .addNewObstaclePoint(0.0, 50.0)
+                .addNewObstaclePoint(i1, 50.0) //A
+                .addNewObstaclePoint(i1, 200.0) //B
+                .addNewObstaclePoint(0.0, 200.0)
+                .addNewObstaclePoint(0.0, 50.0);
 
-        PotentialPoint[][] potentialPoints = wariantA.getMatrixSpace().getDoubleMatrix().getMatrix();
+        final Obstacle obstacle2 = new Obstacle()
+                .addNewObstaclePoint(i2, 50.0)
+                .addNewObstaclePoint(400.0, 50.0) //A
+                .addNewObstaclePoint(400.0, 200.0) //B
+                .addNewObstaclePoint(i2, 200.0)
+                .addNewObstaclePoint(i2, 50.0);
 
+        matrixSpace1.addObstacle(obstacle1);
+        matrixSpace1.addObstacle(obstacle2);
+
+        WariantBAlt wariantBAlt1 = new WariantBAlt(matrixSpace1, i1, i2, -500.0);
+
+        PotentialPoint[][] temp = wariantBAlt1.getMatrixSpace().getDoubleMatrix().getMatrix();
+
+        for (int i = 0; i < 401; i++) {
+            for (int j = 0; j < 201; j++) {
+                System.out.print(temp[i][j].getWir() + " ");
+            }
+            System.out.println();
+        }
+
+        wariantBAlt1.calculateIntegral();
+
+        PotentialPoint[][] potentialPoints = wariantBAlt1.getMatrixSpace().getDoubleMatrix().getMatrix();
         CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(potentialPoints, 0.01, "warA_pot.dat")
+                new AdvancedOutputFile(potentialPoints, 0.01, "warB_pot1.dat")
         );
 
         CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(potentialPoints, 0.01, "warA_wir.dat", 0)
+                wariantBAlt1.generateVelocities().toString(), "warB_vel_x_2.dat"
         );
 
         CustomFileWriter.writeToFile(
-                wariantA.generateVelocities().toString(), "warA_vel.dat"
+                new AdvancedOutputFile(wariantBAlt1.generatePotentialAtPoint(0), 0.01, "warB_potnX0.dat")
         );
-
         CustomFileWriter.writeToFile(
-                wariantA.evaluatePotencjalAndWirowoscAt(50).toString(), "warA_pot_i_50.dat"
+                new AdvancedOutputFile(wariantBAlt1.generatePotentialAtPoint(0), 0.01, "warB_WIRX0.dat", 0)
         );
-
         CustomFileWriter.writeToFile(
-                wariantA.evaluatePotencjalAndWirowoscAt(250).toString(), "warA_pot_i_250.dat"
+                new AdvancedOutputFile(wariantBAlt1.generatePotentialAtPoint(2), 0.01, "warB_potnX2.dat")
+        );
+        CustomFileWriter.writeToFile(
+                new AdvancedOutputFile(wariantBAlt1.generatePotentialAtPoint(2), 0.01, "warB_WIRX2.dat", 0)
         );
 
 
-        /// Zadanie 2
+        //Zadanie 2
+
+        i1 = 125;
+        i2 = 275;
+
+        final Obstacle obstacle3 = new Obstacle()
+                .addNewObstaclePoint(0.0, 50.0)
+                .addNewObstaclePoint(i1, 50.0) //A
+                .addNewObstaclePoint(i1, 200.0) //B
+                .addNewObstaclePoint(0.0, 200.0)
+                .addNewObstaclePoint(0.0, 50.0);
+
+        final Obstacle obstacle4 = new Obstacle()
+                .addNewObstaclePoint(i2, 50.0)
+                .addNewObstaclePoint(400.0, 50.0) //A
+                .addNewObstaclePoint(400.0, 200.0) //B
+                .addNewObstaclePoint(i2, 200.0)
+                .addNewObstaclePoint(i2, 50.0);
 
         MatrixSpace matrixSpace2 = new MatrixSpace(
                 //                                  rows          columns
-                MatrixBuilder.buildIntegerMatrix(301, 91),
-                MatrixBuilder.buildDoubleMatrix(301, 91),
+                MatrixBuilder.buildIntegerMatrix(401, 201),
+                MatrixBuilder.buildDoubleMatrix(401, 201),
                 0.01
         );
-        final Obstacle obstacle = new Obstacle()
-                .addNewObstaclePoint(85.0, 90.0)
-                .addNewObstaclePoint(85.0, 70.0) //A
-                .addNewObstaclePoint(101.0, 70.0) //B
-                .addNewObstaclePoint(101.0, 50.0) //C
-                .addNewObstaclePoint(116.0, 50.0) //D
-                .addNewObstaclePoint(116.0, 90.0)
-                .addNewObstaclePoint(85.0, 90.0);
 
-        matrixSpace2.addObstacle(obstacle);
+        matrixSpace2.addObstacle(obstacle3);
+        matrixSpace2.addObstacle(obstacle4);
 
-        ///// Q = -1.0
-        WariantAAlt wariantA2 = new WariantAAlt(matrixSpace2, WariantAAlt.TYPE.OBSTACLE, -1.0);
+        WariantBAlt wariantBAlt2 = new WariantBAlt(matrixSpace2, i1, i2, -10.0);
+        wariantBAlt2.calculateIntegral();
 
-        wariantA2.executeTaskOne();
-
-        PotentialPoint[][] potentialPoints2 = wariantA2.getMatrixSpace().getDoubleMatrix().getMatrix();
-
+        potentialPoints = wariantBAlt2.getMatrixSpace().getDoubleMatrix().getMatrix();
         CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(potentialPoints2, 0.01, "warA_pot2_Q1.dat")
+                new AdvancedOutputFile(potentialPoints, 0.01, "warB_potQ10.dat")
         );
 
-        CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(wariantA2.generateUVelocityMatrix(), 0.01, "warA_pot2_Q1_U.dat")
-        );
-
-        CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(wariantA2.generateVVelocityMatrix(), 0.01, "warA_pot2_Q1_V.dat")
-        );
-
-
+        /// Q 100
         MatrixSpace matrixSpace3 = new MatrixSpace(
                 //                                  rows          columns
-                MatrixBuilder.buildIntegerMatrix(301, 91),
-                MatrixBuilder.buildDoubleMatrix(301, 91),
+                MatrixBuilder.buildIntegerMatrix(401, 201),
+                MatrixBuilder.buildDoubleMatrix(401, 201),
                 0.01
         );
-        final Obstacle obstacle2 = new Obstacle()
-                .addNewObstaclePoint(85.0, 90.0)
-                .addNewObstaclePoint(85.0, 70.0) //A
-                .addNewObstaclePoint(101.0, 70.0) //B
-                .addNewObstaclePoint(101.0, 50.0) //C
-                .addNewObstaclePoint(116.0, 50.0) //D
-                .addNewObstaclePoint(116.0, 90.0)
-                .addNewObstaclePoint(85.0, 90.0);
 
-        matrixSpace3.addObstacle(obstacle2);
-        ///// Q = -150.0
-        WariantAAlt wariantA3 = new WariantAAlt(matrixSpace3, WariantAAlt.TYPE.OBSTACLE, -150.0);
+        matrixSpace3.addObstacle(obstacle3);
+        matrixSpace3.addObstacle(obstacle4);
 
-        wariantA3.executeTaskOne();
+        WariantBAlt wariantBAlt3 = new WariantBAlt(matrixSpace3, i1, i2, -100.0);
+        wariantBAlt3.calculateIntegral();
 
-        PotentialPoint[][] potentialPoints3 = wariantA3.getMatrixSpace().getDoubleMatrix().getMatrix();
-
+        potentialPoints = wariantBAlt3.getMatrixSpace().getDoubleMatrix().getMatrix();
         CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(potentialPoints3, 0.01, "warA_pot2_Q150.dat")
-        );
-
-        CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(wariantA3.generateUVelocityMatrix(), 0.01, "warA_pot2_Q150_U.dat")
-        );
-
-        CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(wariantA3.generateVVelocityMatrix(), 0.01, "warA_pot2_Q150_V.dat")
+                new AdvancedOutputFile(potentialPoints, 0.01, "warB_potQ100.dat")
         );
 
 
-
-
-
+        /// Q500
         MatrixSpace matrixSpace4 = new MatrixSpace(
                 //                                  rows          columns
-                MatrixBuilder.buildIntegerMatrix(301, 91),
-                MatrixBuilder.buildDoubleMatrix(301, 91),
+                MatrixBuilder.buildIntegerMatrix(401, 201),
+                MatrixBuilder.buildDoubleMatrix(401, 201),
                 0.01
         );
-        final Obstacle obstacle3 = new Obstacle()
-                .addNewObstaclePoint(85.0, 90.0)
-                .addNewObstaclePoint(85.0, 70.0) //A
-                .addNewObstaclePoint(101.0, 70.0) //B
-                .addNewObstaclePoint(101.0, 50.0) //C
-                .addNewObstaclePoint(116.0, 50.0) //D
-                .addNewObstaclePoint(116.0, 90.0)
-                .addNewObstaclePoint(85.0, 90.0);
 
         matrixSpace4.addObstacle(obstacle3);
-        ///// Q = -400.0
-        WariantAAlt wariantA4 = new WariantAAlt(matrixSpace4, WariantAAlt.TYPE.OBSTACLE, -400.0);
+        matrixSpace4.addObstacle(obstacle4);
 
-        wariantA4.executeTaskOne();
+        WariantBAlt wariantBAlt4 = new WariantBAlt(matrixSpace4, i1, i2, -500.0);
+        wariantBAlt4.calculateIntegral();
 
-        PotentialPoint[][] potentialPoints4 = wariantA4.getMatrixSpace().getDoubleMatrix().getMatrix();
-
+        potentialPoints = wariantBAlt4.getMatrixSpace().getDoubleMatrix().getMatrix();
         CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(potentialPoints4, 0.01, "warA_pot2_Q400.dat")
+                new AdvancedOutputFile(potentialPoints, 0.01, "warB_potQ500.dat")
         );
 
-        CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(wariantA4.generateUVelocityMatrix(), 0.01, "warA_pot2_Q400_U.dat")
+
+        //// Q1000
+        MatrixSpace matrixSpace5 = new MatrixSpace(
+                //                                  rows          columns
+                MatrixBuilder.buildIntegerMatrix(401, 201),
+                MatrixBuilder.buildDoubleMatrix(401, 201),
+                0.01
         );
 
+        matrixSpace5.addObstacle(obstacle3);
+        matrixSpace5.addObstacle(obstacle4);
+
+        WariantBAlt wariantBAlt5 = new WariantBAlt(matrixSpace5, i1, i2, -1000.0);
+        wariantBAlt5.calculateIntegral();
+
+        potentialPoints = wariantBAlt5.getMatrixSpace().getDoubleMatrix().getMatrix();
         CustomFileWriter.writeToFile(
-                new AdvancedOutputFile(wariantA4.generateVVelocityMatrix(), 0.01, "warA_pot2_Q400_V.dat")
+                new AdvancedOutputFile(potentialPoints, 0.01, "warB_potQ1000.dat")
         );
-    }
-
-    public static void zestawB() {
-
+        CustomFileWriter.writeToFile(
+                new AdvancedOutputFile(potentialPoints, 0.01, "warB_wirQ1000.dat", 0)
+        );
     }
 
     public static void main(String[] args) {
 
-
-        zestawA();
-
+        zestawB();
         System.out.println("Hello World!");
     }
 }

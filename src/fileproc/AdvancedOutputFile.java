@@ -14,11 +14,34 @@ public class AdvancedOutputFile<T> {
     public AdvancedOutputFile(PotentialPoint[][] potential, double delta, String filename) {
         this.sections = new ArrayList<>();
 
-        for (double i = 0; i < potential.length; i+=1.0) {
+        for (int i = 0; i < potential.length; i++) {
             Section<Double> section = new Section<>();
-            for (double j = 0; j < potential[0].length; j+=1.0) {
-                section.addRecord(new Record<>(i*delta, j*delta, potential[(int)i][(int)j].getValue()));
+            for (int j = 0; j < potential[0].length; j++) {
+                section.addRecord(new Record<>(potential[i][j].getX(), potential[i][j].getY(), potential[i][j].getValue()));
             }
+            sections.add(section);
+        }
+
+        this.filename = filename;
+    }
+
+    public AdvancedOutputFile(PotentialPoint[] potential, double delta, String filename) {
+        this.sections = new ArrayList<>();
+
+        for (int i = 0; i < potential.length; i++) {
+            Section<Double> section = new Section<>();
+                section.addRecord(new Record<>(potential[i].getX(), potential[i].getY(), potential[i].getValue()));
+            sections.add(section);
+        }
+
+        this.filename = filename;
+    }
+    public AdvancedOutputFile(PotentialPoint[] potential, double delta, String filename, int k) {
+        this.sections = new ArrayList<>();
+
+        for (int i = 0; i < potential.length; i++) {
+            Section<Double> section = new Section<>();
+            section.addRecord(new Record<>(potential[i].getX(), potential[i].getY(), potential[i].getWir()));
             sections.add(section);
         }
 

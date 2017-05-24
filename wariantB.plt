@@ -1,133 +1,105 @@
 set terminal png size 800,600
-set o 'WarBRelaxationZad1.png'
-set xl 'os X'
-set yl 'os Y'
+set o 'Potential1.png'
+set xlabel "x"
+set ylabel "y"
+set size ratio -1
+set contour
+set cntrparam levels 100
 set view map
-set size ratio -1
-set title 'Zad2. Przeplyw potencjalny'
-set contours
-set contour base
-set cntrparam levels 10
-unset clabel
-set pm3d
-splot 'warB_pot.dat' u 1:2:3 w pm3d lt -1 t ''
+unset surface
+unset key
+splot 'warB_pot1.dat' u 1:2:3 w l title "Zad 1"
 
 set terminal png size 800,600
-set o 'WarBIntegralZad1.png'
-set xl 'iteracja'
-set yl 'wrtosc calki'
-set size ratio -1
-unset pm3d
-set title 'Wartosc calki w kolejnych iteracjach'
-set log x
-set log y
-plot 'warB_integral.dat' with line
-
-set terminal png size 800,600
-set o 'WarBRelaxationZad2.png'
-unset log x
-unset log y
+set o 'VelocityX2.png'
 set xl 'os X'
 set yl 'os Y'
+plot 'warB_vel_x_2.dat' u 1:2 w lines t 'Predkosc numerycznie'
+
+set terminal png size 800,600
+set o 'PotentialX0.png'
+set xl 'os X'
+set yl 'os Y'
+plot 'warB_potnX0.dat' u 1:3 w lines t 'Potencjal w x = 0'
+
+set terminal png size 800,600
+set o 'PotentialX2.png'
+set xl 'os X'
+set yl 'os Y'
+plot 'warB_potnX2.dat' u 1:3 w lines t 'Potencjal w x = 0'
+
+set terminal png size 800,600
+set o 'WirX0.png'
+set xl 'os X'
+set yl 'os Y'
+plot 'warB_wirX0.dat' u 1:3 w lines t 'Wir w x = 0'
+
+set terminal png size 800,600
+set o 'WirX2.png'
+set xl 'os X'
+set yl 'os Y'
+plot 'warB_wirX2.dat' u 1:3 w lines t 'Wir w x = 0'
+
+
+##Zadanie 2
+set terminal png size 800,600
+set o 'PotentialQ10.png'
+set xlabel "x"
+set ylabel "y"
+set size ratio -1
+set contour
+set cntrparam levels 100
 set view map
+unset surface
+unset key
+splot 'warB_potQ10.dat' u 1:2:3 w l title "Q = -10"
+
+set terminal png size 800,600
+set o 'PotentialQ100.png'
+set xlabel "x"
+set ylabel "y"
 set size ratio -1
-set title 'Zad2. Przeplyw potencjalny'
-set contours
-set contour base
-set cntrparam levels 30
-unset clabel
-set pm3d
-splot 'warB_pot2.dat' u 1:2:3 w pm3d lt -1 t ''
-
-set terminal png size 800,600
-set o 'WarBIntegralZad2.png'
-set xl 'iteracja'
-set yl 'wrtosc calki'
-set size ratio -1
-unset pm3d
-set title 'Wartosc calki w kolejnych iteracjach'
-set log x
-set log y
-plot 'warB_integral2.dat' with line
-
-
-
-
-
-#### From A
-set terminal png size 800,600
-set o 'StrumienI50.png'
-set xl 'os X'
-set yl 'os Y'
-set title 'Funkcja strumienia w i = 50'
-plot 'warA_i50.dat' u 1:2 w lines t 'Strumien numerycznie', \
-'warA_i50.dat' u 1:3 w lines t 'Strumien analitycznie'
-
-set terminal png size 800,600
-set o 'WirowoscI50.png'
-set xl 'os X'
-set yl 'os Y'
-set title 'Funckaj wiru w i =50'
-plot 'warA_i50.dat' u 1:4 w lines t 'Wir numerycznie', \
-'warA_i50.dat' u 1:5 w lines t 'Wir analitycznie'
-
-set terminal png size 800,600
-set o 'StrumienI250.png'
-set xl 'os X'
-set yl 'os Y'
-set title 'Funkcja strumienia w i = 250'
-plot 'warA_i250.dat' u 1:2 w lines t 'Strumien numerycznie', \
-'warA_i250.dat' u 1:3 w lines t 'Strumien analitycznie'
-
-set terminal png size 800,600
-set o 'WirowoscI250.png'
-set xl 'os X'
-set yl 'os Y'
-set title 'Funckaj wiru w i =250'
-plot 'warA_i250.dat' u 1:4 w lines t 'Wir numerycznie', \
-'warA_i250.dat' u 1:5 w lines t 'Wir analitycznie'
-
-
-
-set terminal png size 800,600
-set o 'Potential2Q1.png'
-set xl 'os X'
-set yl 'os Y'
+set contour
+set cntrparam levels 100
 set view map
+unset surface
+unset key
+splot 'warB_potQ100.dat' u 1:2:3 w l title "Q = -100"
+
+set terminal png size 800,600
+set o 'PotentialQ500.png'
+set xlabel "x"
+set ylabel "y"
 set size ratio -1
-set title 'Zad2. Przeplyw potencjalny'
-set contours
-set contour base
-set cntrparam levels 30
-unset clabel
-set pm3d
-splot 'warA_pot2_Q1.dat' u 1:2:3 w pm3d lt -1 t ''
+set contour
+set cntrparam levels 100
+set view map
+unset surface
+unset key
+splot 'warB_potQ500.dat' u 1:2:3 w l title "Q = -500"
 
 
 set terminal png size 800,600
-set o 'Potential2Q2.png'
-set xl 'os X'
-set yl 'os Y'
-set view map
+set o 'PotentialQ1000.png'
+set xlabel "x"
+set ylabel "y"
 set size ratio -1
-set title 'Zad2. Przeplyw potencjalny'
-set contours
-set contour base
-set cntrparam levels 30
-unset clabel
-set pm3d
-splot 'warA_pot2_Q2.dat' u 1:2:3 w pm3d lt -1 t ''
+set contour
+set cntrparam levels 100
+set view map
+unset surface
+unset key
+splot 'warB_potQ1000.dat' u 1:2:3 w l title "Q = -1000"
+
 
 set terminal png size 800,600
-set o 'Potential2Q3.png'
-set xl 'os X'
-set yl 'os Y'
-set view map
+set o 'WirowoscQ1000.png'
+set xlabel "x"
+set ylabel "y"
 set size ratio -1
-set title 'Zad2. Przeplyw potencjalny'
-set contours
-set contour base
-set cntrparam levels 30
-unset clabel
-set pm3d
-splot 'warA_pot2_Q3.dat' u 1:2:3 w pm3d lt -1 t ''
+set contour
+set cntrparam levels 100
+set view map
+unset surface
+unset key
+splot 'warB_wirQ1000.dat' u 1:2:3 w l title "Wir Q = -1000"
